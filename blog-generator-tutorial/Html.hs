@@ -18,10 +18,10 @@ head_ :: String -> String
 head_ = el "head"
 
 p_ :: String -> Structure
-p_ = Structure . el "p"
+p_ = Structure . el "p" . escape
 
 h1_ :: String -> Structure
-h1_ = Structure . el "h1"  
+h1_ = Structure . el "h1" . escape 
 
 
 -- defines new types Html and Structure

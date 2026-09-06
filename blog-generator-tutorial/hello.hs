@@ -9,5 +9,5 @@ main = putStrLn (render myhtml)
 
 -- calls the function to make the HTML by inputting the Title and the body of text
 myhtml :: Html
-myhtml = html_ "My Title" (append_ (h1_ "Hello World!") (p_ "My Body"))
+myhtml = html_ "My Title>" (append_ (h1_ "Hello World!") (p_ "My Body"))
 
