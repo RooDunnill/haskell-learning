@@ -2,28 +2,26 @@ module Html
   ( Html,
   Title,
   Structure,
-  body_,
   p_,
-  title_,
   h1_,
   append_,
   render,
-  makeHtml
+  escape,
+  html_
   )
 where
 
 
 -- a set of functions that creates different HTML structures
-body_ :: String -> String
-body_ = el "body"
-title_ :: String -> String
-title_ = el "title"
+
 head_ :: String -> String
 head_ = el "head"
-p_ :: String -> String
-p_ = el "p"
-h1_ :: String -> String
-h1_ = el "h1"  
+
+p_ :: String -> Structure
+p_ = Structure . el "p"
+
+h1_ :: String -> Structure
+h1_ = Structure . el "h1"  
 
 
 -- defines new types Html and Structure
@@ -34,8 +32,8 @@ newtype Structure = Structure String
 type Title = String
 
 -- takes in the title and body as strings and creates the necessary HTML around it before then returning it as an HTML type
-makeHtml :: String -> String -> Html
-makeHtml title body = Html (el "html" (head_ (title_ title) <> body_ body))
+html_ :: String -> Structure -> Html
+html_ title body = Html (el "html" (head_ (el "title" (escape title)) <> el "body" (returnStructureString body)))
 
 -- adds the HTML arrows around the division element you wish to create
 el :: String -> String -> String
@@ -57,3 +55,22 @@ returnStructureString :: Structure -> String
 returnStructureString struct = 
     case struct of
         Structure str -> str
+
+escape :: String -> String
+escape =
+    let
+        escapeChar :: Char -> String
+        escapeChar c =
+            case c of
+                '<' -> "&lt;"
+                '>' -> "&gt;"
+                '&' -> "&amp;"
+                '"' -> "&quot;"
+                '\'' -> "&#39;"
+                _ -> [c]
+    in
+        -- String type is a list of Chars [Char]
+        -- concat concatinates a list of lists of a into a list of a :: [[a]] -> [a]
+        -- map applies a function to each element in a list
+        -- so concat . map escapeChar is applying escapeChar to every element in the String and then merging all of the lists of lists into a String
+        concat . map escapeChar
