@@ -1,7 +1,6 @@
 module Main (main) where
 
 import Html
-import GHC.Internal.Text.Read (Lexeme(String))
 
 -- should always give the typing of each function beforehand
 main :: IO ()
